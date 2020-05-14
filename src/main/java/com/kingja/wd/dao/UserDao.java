@@ -1,8 +1,10 @@
 package com.kingja.wd.dao;
 
-import com.kingja.wd.entity.UserT;
+import com.kingja.wd.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import javax.transaction.Transactional;
 
 /**
  * Description：TODO
@@ -10,6 +12,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public interface UserDao extends JpaRepository<UserT, String> {
-    UserT findByUserId(String userId);
+@Transactional
+public interface UserDao extends JpaRepository<User, String> {
+    User findByUserId(String userId);
+
+    User findByUsername(String username);
+
+    User findByUsernameAndPassword(String username, String password);
 }

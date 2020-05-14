@@ -1,12 +1,15 @@
 package com.kingja.wd.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import lombok.Data;
 
@@ -17,14 +20,17 @@ import lombok.Data;
  * Email:kingjavip@gmail.com
  */
 @Entity
-@Table(name = "user")
-@Data
 @DynamicUpdate
-public class UserT {
+@Data
+@EntityListeners(AuditingEntityListener.class)
+public class User {
     @Id
     private String userId;
     private String username;
     private String password;
+    private String faceUrl;
+    @CreatedDate
     private Date createTime;
+    @LastModifiedDate
     private Date updateTime;
 }

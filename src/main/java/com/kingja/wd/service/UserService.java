@@ -1,6 +1,6 @@
 package com.kingja.wd.service;
 
-import com.kingja.wd.entity.UserT;
+import com.kingja.wd.entity.User;
 
 /**
  * Description:TODO
@@ -8,6 +8,13 @@ import com.kingja.wd.entity.UserT;
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
+
 public interface UserService {
-    UserT findByUserId(String userId);
+    User findByUserId(String userId);
+
+    void register(User user);
+
+    User login(User user);
+
+    void updateUserInfo(User user);
 }

@@ -6,10 +6,15 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
-#redis.host=10.110.3.62
-#redis.port=6379
-#redis.timeout=10
-#redis.password=123456
-#redis.poolMaxTotal=1000
-#redis.poolMaxIdle=500
+redis:
+  host: 192.168.0.138
+  port: 6379
+  timeout: 10
+  password: wzy1gqqbuu
+  poolMaxTotal: 1000
+  poolMaxIdle: 500
