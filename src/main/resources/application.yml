@@ -12,7 +12,7 @@ spring:
     show-sql: true
 
 redis:
-  host: 192.168.0.138
+  host: 192.168.0.207
   port: 6379
   timeout: 10
   password: wzy1gqqbuu

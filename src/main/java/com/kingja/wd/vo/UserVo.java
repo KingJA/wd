@@ -13,4 +13,5 @@ public class UserVo {
     private String userId;
     private String username;
     private String token;
+    private String faceUrl;
 }

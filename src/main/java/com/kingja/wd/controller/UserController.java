@@ -63,9 +63,7 @@ public class UserController {
         if (file.isEmpty()) {
             throw new ApiException(ResultEnum.ERROR_CHANGEFACE);
         }
-
         String fileName = file.getOriginalFilename();
-
         // 文件保存的命名空间
         String fileSpace = "g:/wd";
         // 保存到数据库中的相对路径
@@ -77,13 +75,14 @@ public class UserController {
         uploadPathDB += ("/" + fileName);
 
         File outFile = new File(finalFacePath);
-        if (outFile.getParentFile() != null || !outFile.getParentFile().isDirectory()) {
+        if (outFile.getParentFile() != null && !outFile.getParentFile().isDirectory()) {
             // 创建父文件夹
             outFile.getParentFile().mkdirs();
         }
         try {
             file.transferTo(new File(finalFacePath));
         } catch (IOException e) {
+            log.error(e.toString());
             throw new ApiException(ResultEnum.ERROR_CHANGEFACE);
         }
 
@@ -92,7 +91,7 @@ public class UserController {
         user.setFaceUrl(uploadPathDB);
         userService.updateUserInfo(user);
 
-        return ApiResult.successMsg("头像更新成功");
+        return ApiResult.success(uploadPathDB);
     }
 
 

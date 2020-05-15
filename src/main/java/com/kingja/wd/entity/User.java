@@ -1,5 +1,6 @@
 package com.kingja.wd.entity;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,6 +22,7 @@ import lombok.Data;
  */
 @Entity
 @DynamicUpdate
+@DynamicInsert
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class User {
@@ -29,8 +31,8 @@ public class User {
     private String username;
     private String password;
     private String faceUrl;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+//    @CreatedDate
+//    private Date createTime;
+//    @LastModifiedDate
+//    private Date updateTime;
 }
