@@ -2,7 +2,6 @@ package com.kingja.wd.controller;
 
 import com.kingja.wd.entity.User;
 import com.kingja.wd.exception.ApiException;
-import com.kingja.wd.form.UserForm;
 import com.kingja.wd.redis.RedisService;
 import com.kingja.wd.redis.UserKey;
 import com.kingja.wd.result.ApiResult;
@@ -104,19 +103,26 @@ public class UserController {
         return ApiResult.success(userVo);
     }
 
+    @PostMapping("/quit")
+    @ResponseBody
+    public ApiResult quit() {
+        return ApiResult.successMsg("退出登录成功");
+    }
+
 
     private void checkAccountEmpty(User user) {
         String username = user.getUsername();
         String password = user.getPassword();
+        log.error(username + " " + user.getPassword());
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             throw new ApiException(ResultEnum.ERROR_ACCOUNT_EMPTY);
         }
-        log.error(username + " " + user.getPassword());
+
     }
 
     private UserVo getTokenBody(User user) {
         String token = UUIDUtil.uuid();
-        redisService.set(UserKey.getById, user.getUserId(), token);
+        redisService.set(UserKey.Token, token, user.getUserId());
         UserVo userVO = new UserVo();
         BeanUtils.copyProperties(user, userVO);
         userVO.setToken(token);

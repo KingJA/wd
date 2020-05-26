@@ -16,6 +16,13 @@ public enum ResultEnum {
     ERROR_ACCOUNT_EMPTY(10004, "用户名或密码不能为空"),
     ERROR_ACCOUNT(10005, "用户名或密码错误"),
     ERROR_CHANGEFACE(20001, "文件上传失败"),
+    ERROR_PUBLISH(20002, "问题标题或者内容不能为空"),
+
+
+    ACCESS_LIMIT_REACHED(30001, "访问过于频繁"),
+    REQUEST_ILLEGAL(30002, "非法访问"),
+
+
     SHOULD_LOGIN(444, "用户未登录"),
     ORDER_OWNER_ERROR(18, "查询openid不一致");
     private Integer code;

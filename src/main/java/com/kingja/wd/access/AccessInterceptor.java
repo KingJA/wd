@@ -3,6 +3,9 @@ package com.kingja.wd.access;
 import com.alibaba.fastjson.JSON;
 import com.kingja.wd.redis.AccessKey;
 import com.kingja.wd.redis.RedisService;
+import com.kingja.wd.redis.UserKey;
+import com.kingja.wd.result.ApiResult;
+import com.kingja.wd.result.ResultEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AccessInterceptor  extends HandlerInterceptorAdapter {
 //
 //	@Autowired
@@ -29,8 +35,11 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		if(handler instanceof HandlerMethod) {
-//			MiaoshaUser user = getUser(request, response);
-//			UserContext.setUser(user);
+			String token = request.getHeader("token");
+			String userId = redisService.get(UserKey.Token, token,String.class);
+			log.error("token:"+token);
+			log.error("userId:"+userId);
+			UserContext.setUserId(userId);
 			HandlerMethod hm = (HandlerMethod)handler;
 			AccessLimit accessLimit = hm.getMethodAnnotation(AccessLimit.class);
 			if(accessLimit == null) {
@@ -41,11 +50,11 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter {
 			boolean needLogin = accessLimit.needLogin();
 			String key = request.getRequestURI();
 			if(needLogin) {
-//				if(user == null) {
-//					render(response, CodeMsg.SESSION_ERROR);
-//					return false;
-//				}
-//				key += "_" + user.getId();
+				if(StringUtils.isEmpty(token)) {
+					render(response, ResultEnum.REQUEST_ILLEGAL);
+					return false;
+				}
+				key = token;
 			}else {
 				//do nothing
 			}
@@ -56,32 +65,22 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter {
 	    	}else if(count < maxCount) {
 	    		 redisService.incr(ak, key);
 	    	}else {
-//	    		render(response, CodeMsg.ACCESS_LIMIT_REACHED);
+	    		render(response, ResultEnum.ACCESS_LIMIT_REACHED);
 	    		return false;
 	    	}
 		}
 		return true;
 	}
-//
-//	private void render(HttpServletResponse response, CodeMsg cm)throws Exception {
-//		response.setContentType("application/json;charset=UTF-8");
-//		OutputStream out = response.getOutputStream();
-//		String str  = JSON.toJSONString(Result.error(cm));
-//		out.write(str.getBytes("UTF-8"));
-//		out.flush();
-//		out.close();
-//	}
-//
-//	private MiaoshaUser getUser(HttpServletRequest request, HttpServletResponse response) {
-//		String paramToken = request.getParameter(MiaoshaUserService.COOKI_NAME_TOKEN);
-//		String cookieToken = getCookieValue(request, MiaoshaUserService.COOKI_NAME_TOKEN);
-//		if(StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
-//			return null;
-//		}
-//		String token = StringUtils.isEmpty(paramToken)?cookieToken:paramToken;
-//		return userService.getByToken(response, token);
-//	}
-	
+
+	private void render(HttpServletResponse response, ResultEnum resultEnum)throws Exception {
+		response.setContentType("application/json;charset=UTF-8");
+		OutputStream out = response.getOutputStream();
+		String str  = JSON.toJSONString(ApiResult.error(resultEnum));
+		out.write(str.getBytes("UTF-8"));
+		out.flush();
+		out.close();
+	}
+
 	private String getCookieValue(HttpServletRequest request, String cookiName) {
 		Cookie[]  cookies = request.getCookies();
 		if(cookies == null || cookies.length <= 0){
