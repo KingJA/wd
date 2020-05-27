@@ -7,6 +7,7 @@ import com.kingja.wd.redis.UserKey;
 import com.kingja.wd.result.ApiResult;
 import com.kingja.wd.result.ResultEnum;
 import com.kingja.wd.service.UserService;
+import com.kingja.wd.threepart.qiniuyun.QiniuUpload;
 import com.kingja.wd.util.UUIDUtil;
 import com.kingja.wd.vo.UserVo;
 
@@ -20,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,39 +56,25 @@ public class UserController {
 
     @PostMapping("/changeFace")
     @ResponseBody
-    public ApiResult updateFace(@RequestParam("userId") String userId, @RequestParam("file") MultipartFile file) {
+    public ApiResult updateFace(@RequestParam("file") MultipartFile file, String userId) {
+        log.error("changeFace");
         if (file.isEmpty()) {
             throw new ApiException(ResultEnum.ERROR_CHANGEFACE);
         }
         String fileName = file.getOriginalFilename();
-        // 文件保存的命名空间
-        String fileSpace = "g:/wd";
-        // 保存到数据库中的相对路径
-        String uploadPathDB = "/" + userId + "/face";
-
-        // 文件上传的最终保存路径
-        String finalFacePath = fileSpace + uploadPathDB + "/" + fileName;
-        // 设置数据库保存的路径
-        uploadPathDB += ("/" + fileName);
-
-        File outFile = new File(finalFacePath);
-        if (outFile.getParentFile() != null && !outFile.getParentFile().isDirectory()) {
-            // 创建父文件夹
-            outFile.getParentFile().mkdirs();
-        }
+        /*存储到七牛云*/
+        String imgUrl = "";
         try {
-            file.transferTo(new File(finalFacePath));
-        } catch (IOException e) {
+            imgUrl = QiniuUpload.updateFile(file, fileName);
+        } catch (Exception e) {
             log.error(e.toString());
             throw new ApiException(ResultEnum.ERROR_CHANGEFACE);
         }
-
         User user = new User();
         user.setUserId(userId);
-        user.setFaceUrl(uploadPathDB);
+        user.setFaceUrl(imgUrl);
         userService.updateUserInfo(user);
-
-        return ApiResult.success(uploadPathDB);
+        return ApiResult.success(imgUrl);
     }
 
 

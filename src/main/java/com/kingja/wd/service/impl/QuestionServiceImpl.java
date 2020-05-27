@@ -33,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestions(int pageIndex, int pageSize) {
-        PageRequest pageable = PageRequest.of(pageIndex, pageSize, Sort.Direction.DESC, "updateTime");
+        PageRequest pageable = PageRequest.of(pageIndex, pageSize, Sort.Direction.DESC, "createTime");
         return questionDao.findAll(pageable).getContent();
     }
 }

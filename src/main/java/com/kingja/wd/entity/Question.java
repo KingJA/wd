@@ -27,5 +27,7 @@ public class Question {
     private String userId;
     private String title;
     private String content;
+    private String resUrl;
     private String updateTime;
+    private String createTime;
 }
