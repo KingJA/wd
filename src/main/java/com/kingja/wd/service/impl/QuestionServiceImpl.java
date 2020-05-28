@@ -3,6 +3,7 @@ package com.kingja.wd.service.impl;
 import com.kingja.wd.dao.QuestionDao;
 import com.kingja.wd.entity.Question;
 import com.kingja.wd.service.QuestionService;
+import com.kingja.wd.vo.QuestionDetailVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,5 +36,10 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> getQuestions(int pageIndex, int pageSize) {
         PageRequest pageable = PageRequest.of(pageIndex, pageSize, Sort.Direction.DESC, "createTime");
         return questionDao.findAll(pageable).getContent();
+    }
+
+    @Override
+    public  QuestionDetailVo   getQuestionDetail(String questionId) {
+        return questionDao.getQuestionDetail(questionId);
     }
 }

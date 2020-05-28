@@ -69,4 +69,11 @@ public class QuestionController {
         log.error(pageIndex + " | " + pageSize);
         return ApiResult.success(questionService.getQuestions(pageIndex,pageSize));
     }
+
+    @GetMapping("/detail")
+    @ResponseBody
+    public ApiResult getQuestionDetail(@RequestParam String questionId) {
+        log.error(" questionId:" + questionId);
+        return ApiResult.success(questionService.getQuestionDetail(questionId));
+    }
 }
