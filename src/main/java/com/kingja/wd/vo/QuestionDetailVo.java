@@ -25,6 +25,8 @@ public class QuestionDetailVo {
     private String createTime;
     private String updateTime;
 
+    private boolean isCollected;
+
     public QuestionDetailVo(String userId, String username, String faceUrl, String questionId, String title,
                             String content, String resUrl, String createTime, String updateTime) {
         this.userId = userId;

@@ -22,5 +22,11 @@ public interface QuestionService {
 
     List<Question> getQuestions(int pageIndex, int pageSize);
 
-    QuestionDetailVo   getQuestionDetail(String  questionId);
+    QuestionDetailVo   getQuestionDetail(String userId,String  questionId);
+
+    boolean isCollected(String userId,String questionId);
+
+    void collectQuestion(String userId, String questionId);
+
+    void cancelCollectQuestion(String userId, String questionId);
 }

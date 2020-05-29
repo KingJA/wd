@@ -6,6 +6,7 @@ import com.kingja.wd.exception.ApiException;
 import com.kingja.wd.redis.RedisService;
 import com.kingja.wd.result.ApiResult;
 import com.kingja.wd.result.ResultEnum;
+import com.kingja.wd.service.CommentService;
 import com.kingja.wd.service.QuestionService;
 import com.kingja.wd.service.UserService;
 import com.kingja.wd.threepart.qiniuyun.QiniuUpload;
@@ -34,15 +35,20 @@ public class QuestionController {
     @Autowired
     RedisService redisService;
 
+    @Autowired
+    CommentService commentService;
+
+
 
     @PostMapping("/publish")
     @ResponseBody
     @AccessLimit()
-    public ApiResult publish(@RequestParam(value = "file" ,required = false) MultipartFile file,Question question, String userId) {
+    public ApiResult publish(@RequestParam(value = "file", required = false) MultipartFile file, Question question,
+                             String userId) {
         String title = question.getTitle();
-        String content =  question.getContent();
+        String content = question.getContent();
         log.error(title + " " + content);
-        log.error("isEmpty: " + (file==null));
+        log.error("isEmpty: " + (file == null));
         if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content)) {
             throw new ApiException(ResultEnum.ERROR_PUBLISH);
         }
@@ -67,13 +73,36 @@ public class QuestionController {
     @ResponseBody
     public ApiResult getQuestions(@RequestParam int pageIndex, @RequestParam int pageSize) {
         log.error(pageIndex + " | " + pageSize);
-        return ApiResult.success(questionService.getQuestions(pageIndex,pageSize));
+        return ApiResult.success(questionService.getQuestions(pageIndex, pageSize));
     }
 
     @GetMapping("/detail")
     @ResponseBody
-    public ApiResult getQuestionDetail(@RequestParam String questionId) {
-        log.error(" questionId:" + questionId);
-        return ApiResult.success(questionService.getQuestionDetail(questionId));
+    public ApiResult getQuestionDetail(@RequestParam("questionId") String questionId, String userId) {
+        log.error(" questionId:" + questionId + " userId:" + userId);
+        return ApiResult.success(questionService.getQuestionDetail(userId, questionId));
     }
+
+    @PostMapping("/collectQuestion")
+    @ResponseBody
+    @AccessLimit()
+    public ApiResult collectQuestion(String userId,@RequestParam("questionId") String questionId, @RequestParam("collected") boolean collected) {
+        log.error(" userId:" + userId + " questionId:" + questionId+ " collected:" + collected);
+        if (!collected) {
+            questionService.collectQuestion(userId, questionId);
+        }else{
+            questionService.cancelCollectQuestion(userId, questionId);
+        }
+        return ApiResult.success(!collected);
+    }
+
+    @PostMapping("/comment")
+    @ResponseBody
+    @AccessLimit()
+    public ApiResult comment(String userId,@RequestParam("questionId") String questionId, @RequestParam("content") String content) {
+        log.error(" userId:" + userId + " questionId:" + questionId+ " collected:" + content);
+        commentService.comment(userId,questionId,content);
+        return ApiResult.success("评论成功");
+    }
+
 }

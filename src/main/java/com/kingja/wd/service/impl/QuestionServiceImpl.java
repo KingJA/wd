@@ -1,6 +1,8 @@
 package com.kingja.wd.service.impl;
 
+import com.kingja.wd.dao.CollectDao;
 import com.kingja.wd.dao.QuestionDao;
+import com.kingja.wd.entity.Collect;
 import com.kingja.wd.entity.Question;
 import com.kingja.wd.service.QuestionService;
 import com.kingja.wd.vo.QuestionDetailVo;
@@ -26,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionServiceImpl implements QuestionService {
     @Autowired
     QuestionDao questionDao;
+    @Autowired
+    CollectDao collectDao;
 
     @Override
     public void publishQuestion(Question question) {
@@ -39,7 +43,24 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public  QuestionDetailVo   getQuestionDetail(String questionId) {
-        return questionDao.getQuestionDetail(questionId);
+    public QuestionDetailVo getQuestionDetail(String userId, String questionId) {
+        QuestionDetailVo questionDetail = questionDao.getQuestionDetail(questionId);
+        questionDetail.setCollected(userId != null && isCollected(userId, questionId));
+        return questionDetail;
+    }
+
+    @Override
+    public boolean isCollected(String userId, String questionId) {
+        return collectDao.countByUserIdAndQuestionId(userId, questionId) > 0;
+    }
+
+    @Override
+    public void collectQuestion(String userId, String questionId) {
+        collectDao.save(new Collect(userId, questionId));
+    }
+
+    @Override
+    public void cancelCollectQuestion(String userId, String questionId) {
+        collectDao.deleteCollectByUserIdAndQuestionId(userId, questionId);
     }
 }
