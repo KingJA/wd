@@ -32,5 +32,6 @@ public class Comment {
     private String content;
     private String userId;
     private String questionId;
+    private String createTime;
 
 }

@@ -1,5 +1,7 @@
 package com.kingja.wd.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -26,6 +28,7 @@ public class QuestionDetailVo {
     private String updateTime;
 
     private boolean isCollected;
+    private List<CommentVo> comments;
 
     public QuestionDetailVo(String userId, String username, String faceUrl, String questionId, String title,
                             String content, String resUrl, String createTime, String updateTime) {

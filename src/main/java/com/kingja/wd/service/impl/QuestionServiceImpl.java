@@ -1,10 +1,12 @@
 package com.kingja.wd.service.impl;
 
 import com.kingja.wd.dao.CollectDao;
+import com.kingja.wd.dao.CommentDao;
 import com.kingja.wd.dao.QuestionDao;
 import com.kingja.wd.entity.Collect;
 import com.kingja.wd.entity.Question;
 import com.kingja.wd.service.QuestionService;
+import com.kingja.wd.vo.CommentVo;
 import com.kingja.wd.vo.QuestionDetailVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionDao questionDao;
     @Autowired
     CollectDao collectDao;
+    @Autowired
+    CommentDao commentDao;
 
     @Override
     public void publishQuestion(Question question) {
@@ -45,7 +49,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDetailVo getQuestionDetail(String userId, String questionId) {
         QuestionDetailVo questionDetail = questionDao.getQuestionDetail(questionId);
+        List<CommentVo> commentList = commentDao.getCommentList(questionId);
         questionDetail.setCollected(userId != null && isCollected(userId, questionId));
+        questionDetail.setComments(commentList);
         return questionDetail;
     }
 
