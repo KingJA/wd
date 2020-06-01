@@ -3,11 +3,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: wzy1gqqbuu
-    url: jdbc:mysql://localhost:3306/wd?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://49.232.232.173:3306/wd?useUnicode=true&characterEncoding=UTF-8&useSSL=false
 
 
 redis:
-  host: 192.168.0.193
+  host: 49.232.232.173
   port: 6379
   timeout: 10
   password: wzy1gqqbuu

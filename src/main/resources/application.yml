@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: pro
+    active: dev
 
 
   jackson:
@@ -8,4 +8,8 @@ spring:
 
   jpa:
     show-sql: true
+  jmx:
+    default-domain: wd-jmx
+server:
+  port: 80
 
