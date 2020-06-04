@@ -54,6 +54,11 @@ public class AccessInterceptor  extends HandlerInterceptorAdapter {
 					render(response, ResultEnum.REQUEST_ILLEGAL);
 					return false;
 				}
+				if(StringUtils.isEmpty(userId)) {
+					render(response, ResultEnum.TOKEN_EXPIRES);
+					return false;
+				}
+
 				key = token;
 			}else {
 				//do nothing

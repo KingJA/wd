@@ -21,6 +21,7 @@ public enum ResultEnum {
 
     ACCESS_LIMIT_REACHED(30001, "访问过于频繁"),
     REQUEST_ILLEGAL(30002, "非法访问"),
+    TOKEN_EXPIRES(30003, "登录失效"),
 
 
     SHOULD_LOGIN(444, "用户未登录"),
