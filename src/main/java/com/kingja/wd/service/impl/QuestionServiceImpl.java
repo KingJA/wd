@@ -69,4 +69,10 @@ public class QuestionServiceImpl implements QuestionService {
     public void cancelCollectQuestion(String userId, String questionId) {
         collectDao.deleteCollectByUserIdAndQuestionId(userId, questionId);
     }
+
+    @Override
+    public List<Question> searchQuestion(String keyword,int pageIndex, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
+        return questionDao.searchQuestion(keyword, pageRequest).getContent();
+    }
 }

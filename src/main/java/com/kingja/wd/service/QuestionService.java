@@ -4,6 +4,7 @@ import com.kingja.wd.entity.Question;
 import com.kingja.wd.vo.QuestionDetailVo;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -29,4 +30,6 @@ public interface QuestionService {
     void collectQuestion(String userId, String questionId);
 
     void cancelCollectQuestion(String userId, String questionId);
+
+    List<Question> searchQuestion(String keyword,int pageIndex, int pageSize);
 }

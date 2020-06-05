@@ -76,6 +76,13 @@ public class QuestionController {
         return ApiResult.success(questionService.getQuestions(pageIndex, pageSize));
     }
 
+    @GetMapping("/search")
+    @ResponseBody
+    public ApiResult searchQuestions(@RequestParam("keyword") String keyword,@RequestParam int pageIndex, @RequestParam int pageSize) {
+        log.error(pageIndex + " | " + pageSize);
+        return ApiResult.success(questionService.searchQuestion(keyword,pageIndex, pageSize));
+    }
+
     @GetMapping("/detail")
     @ResponseBody
     public ApiResult getQuestionDetail(@RequestParam("questionId") String questionId, String userId) {
