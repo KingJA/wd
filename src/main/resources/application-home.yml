@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: Wzy1gqqbuu-
+    url: jdbc:mysql://localhost:3306/wd?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+
+
+redis:
+  host: 192.168.1.102
+  port: 6379
+  timeout: 10
+  password: wzy1gqqbuu
+  poolMaxTotal: 1000
+  poolMaxIdle: 500

@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat MySQL Data Transfer
 
- Source Server         : local
+ Source Server         : mysql
  Source Server Type    : MySQL
- Source Server Version : 80015
+ Source Server Version : 80011
  Source Host           : localhost:3306
  Source Schema         : wd
 
  Target Server Type    : MySQL
- Target Server Version : 80015
+ Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 05/06/2020 17:21:25
+ Date: 07/06/2020 22:34:03
 */
 
 SET NAMES utf8mb4;
@@ -34,6 +34,8 @@ CREATE TABLE `collect`  (
 -- Records of collect
 -- ----------------------------
 INSERT INTO `collect` VALUES (3, '1a26a5664bb44ec79af008827cac3949', '046f7effe4314f1198da379b7b2135b8', '2020-05-29 16:23:02', '2020-05-29 16:23:02');
+INSERT INTO `collect` VALUES (4, '1a26a5664bb44ec79af008827cac3949', 'b4c97a7aeed94a079dfd7e8dabdc2afa', '2020-06-07 16:32:13', '2020-06-07 16:32:13');
+INSERT INTO `collect` VALUES (5, '1a26a5664bb44ec79af008827cac3949', 'd206d8d610a04602b91ad6d85c4ae862', '2020-06-07 16:32:18', '2020-06-07 16:32:18');
 
 -- ----------------------------
 -- Table structure for comment
@@ -48,6 +50,12 @@ CREATE TABLE `comment`  (
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`comment_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+INSERT INTO `comment` VALUES ('4028b881728d9eca01728db321980000', '还行', '29080d07aa9d45be956e6b337c06eee6', '1a26a5664bb44ec79af008827cac3949', '2020-06-07 15:33:46', '2020-06-07 15:33:46');
+INSERT INTO `comment` VALUES ('4028b881728d9eca01728dd693310001', 'nice', '29080d07aa9d45be956e6b337c06eee6', '1a26a5664bb44ec79af008827cac3949', '2020-06-07 16:12:29', '2020-06-07 16:12:29');
 
 -- ----------------------------
 -- Table structure for question

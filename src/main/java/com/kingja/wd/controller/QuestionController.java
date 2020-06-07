@@ -39,7 +39,6 @@ public class QuestionController {
     CommentService commentService;
 
 
-
     @PostMapping("/publish")
     @ResponseBody
     @AccessLimit()
@@ -73,14 +72,27 @@ public class QuestionController {
     @ResponseBody
     public ApiResult getQuestions(@RequestParam int pageIndex, @RequestParam int pageSize) {
         log.error(pageIndex + " | " + pageSize);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return ApiResult.success(questionService.getQuestions(pageIndex, pageSize));
     }
 
     @GetMapping("/search")
     @ResponseBody
-    public ApiResult searchQuestions(@RequestParam("keyword") String keyword,@RequestParam int pageIndex, @RequestParam int pageSize) {
+    public ApiResult searchQuestions(@RequestParam("keyword") String keyword, @RequestParam int pageIndex,
+                                     @RequestParam int pageSize) {
         log.error(pageIndex + " | " + pageSize);
-        return ApiResult.success(questionService.searchQuestion(keyword,pageIndex, pageSize));
+        return ApiResult.success(questionService.searchQuestion(keyword, pageIndex, pageSize));
+    }
+
+    @GetMapping("/collected")
+    @ResponseBody
+    public ApiResult getCollectedQuestions(String userId, @RequestParam int pageIndex, @RequestParam int pageSize) {
+        log.error(pageIndex + " | " + pageSize);
+        return ApiResult.success(questionService.getCollectedQuestions(userId, pageIndex, pageSize));
     }
 
     @GetMapping("/detail")
@@ -93,11 +105,12 @@ public class QuestionController {
     @PostMapping("/collectQuestion")
     @ResponseBody
     @AccessLimit()
-    public ApiResult collectQuestion(String userId,@RequestParam("questionId") String questionId, @RequestParam("collected") boolean collected) {
-        log.error(" userId:" + userId + " questionId:" + questionId+ " collected:" + collected);
+    public ApiResult collectQuestion(String userId, @RequestParam("questionId") String questionId, @RequestParam(
+            "collected") boolean collected) {
+        log.error(" userId:" + userId + " questionId:" + questionId + " collected:" + collected);
         if (!collected) {
             questionService.collectQuestion(userId, questionId);
-        }else{
+        } else {
             questionService.cancelCollectQuestion(userId, questionId);
         }
         return ApiResult.success(!collected);
@@ -106,9 +119,10 @@ public class QuestionController {
     @PostMapping("/comment")
     @ResponseBody
     @AccessLimit()
-    public ApiResult comment(String userId,@RequestParam("questionId") String questionId, @RequestParam("content") String content) {
-        log.error(" userId:" + userId + " questionId:" + questionId+ " collected:" + content);
-        commentService.comment(userId,questionId,content);
+    public ApiResult comment(String userId, @RequestParam("questionId") String questionId,
+                             @RequestParam("content") String content) {
+        log.error(" userId:" + userId + " questionId:" + questionId + " collected:" + content);
+        commentService.comment(userId, questionId, content);
         return ApiResult.success("评论成功");
     }
 

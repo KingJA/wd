@@ -32,4 +32,7 @@ public interface QuestionService {
     void cancelCollectQuestion(String userId, String questionId);
 
     List<Question> searchQuestion(String keyword,int pageIndex, int pageSize);
+
+
+    List<Question> getCollectedQuestions(String userId,int pageIndex, int pageSize);
 }

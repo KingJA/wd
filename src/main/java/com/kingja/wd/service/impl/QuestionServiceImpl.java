@@ -10,7 +10,6 @@ import com.kingja.wd.vo.CommentVo;
 import com.kingja.wd.vo.QuestionDetailVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -74,5 +73,11 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> searchQuestion(String keyword,int pageIndex, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
         return questionDao.searchQuestion(keyword, pageRequest).getContent();
+    }
+
+    @Override
+    public List<Question> getCollectedQuestions(String userId, int pageIndex, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
+        return questionDao.findCollectedQuestion(userId,pageRequest);
     }
 }

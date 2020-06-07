@@ -5,9 +5,12 @@ import com.kingja.wd.vo.QuestionDetailVo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -29,5 +32,11 @@ public interface QuestionDao extends JpaRepository<Question, String> {
 
     @Query(value = "SELECT * from question where title like %?1%",nativeQuery = true)
     Page<Question> searchQuestion(String keyword, PageRequest pageRequest);
+
+    @Query(value = "SELECT * FROM question q  RIGHT JOIN  collect c ON q.question_id=c.question_id WHERE c.user_id=?1",nativeQuery = true)
+   List<Question> findCollectedQuestion(String userId, Pageable pageRequest);
+
+
+
 
 }
